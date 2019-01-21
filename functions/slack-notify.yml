@@ -1,0 +1,8 @@
+provider:
+  name: faas
+  gateway: http://192.168.192.20:8080
+functions:
+  slack-notify:
+    lang: python
+    handler: ./slack-notify
+    image: pks-harbor.syddsc.local/library/slack-notify:latest

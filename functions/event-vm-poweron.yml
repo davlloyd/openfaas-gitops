@@ -1,0 +1,12 @@
+provider:
+  name: faas
+  gateway: http://192.168.192.20:8080
+functions:
+  event-vm-poweron:
+    lang: python
+    handler: ./event-vm-poweron
+    image: 
+    image: pks-harbor.syddsc.local/library/event-vm-poweron:latest
+    annotations:
+      topic: drs.vm.powered.on
+

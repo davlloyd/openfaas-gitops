@@ -1,0 +1,8 @@
+provider:
+  name: faas
+  gateway: http://192.168.192.20:8080
+functions:
+  vm-clone:
+    lang: python
+    handler: ./vm-clone
+    image: pks-harbor.syddsc.local/library/vm-clone:latest

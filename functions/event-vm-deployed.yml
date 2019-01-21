@@ -1,0 +1,11 @@
+provider:
+  name: faas
+  gateway: http://192.168.192.20:8080
+functions:
+  event-vm-deployed:
+    lang: python
+    handler: ./event-vm-deployed
+    image: pks-harbor.syddsc.local/library/event-vm-deployed:latest
+    annotations:
+      topic: vm.deployed
+

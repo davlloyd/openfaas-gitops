@@ -1,0 +1,8 @@
+provider:
+  name: faas
+  gateway: http://192.168.192.20:8080
+functions:
+  git-vmrequest:
+    lang: python
+    handler: ./git-vmrequest
+    image: pks-harbor.syddsc.local/library/git-vmrequest:latest
