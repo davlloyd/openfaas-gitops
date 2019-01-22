@@ -25,16 +25,19 @@ def handle(req):
     if metadata is not None:
         vmName = metadata.get("vm_name")
         vmId = metadata.get("vm_id")
-        postmessage = "\n{0} :jackson:\n\nVM Name: *{1}*\nVM_ID: *{2}*".format(message, vmName, vmId.replace("VirtualMachine:", ""))
+        postmessage = "\n{0} :hammertime:\n\nVM Name: *{1}*\nVM_ID: *{2}*".format(message, vmName, vmId.replace("VirtualMachine:", ""))
     else:
         postmessage = req
 
     eventtype = "VM Powered On Event"
     details = "*{0}*\n\n{1}".format(eventtype, postmessage) 
 
-    response = requests.post(
-        slack_url, details,
-        headers={'Content-Type': 'application/text'}
-    )
+    try:
+        response = requests.post(
+            slack_url, details,
+            headers={'Content-Type': 'application/text'}
+        )
+    except:
+        print("PowerOnEvent: Error occurred with slack post")
 
     return {"status": response.status_code}
