@@ -6,6 +6,28 @@ import argparse
 import getpass
 import ssl
 import json
+import requests
+
+def read_secret(secret):
+    f = open('/var/openfaas/secrets/' + secret)
+    val = f.read()
+    if val is None:
+        raise Exception("Requires {0} secret in function namespace".format(secret))
+    f.close()
+    return val
+
+def slack_post(message):
+    """
+    Post details to slack
+    """
+    gw_url = read_secret("gateway_url")
+    slack_url = "{0}/function/slack-notify".format(gw_url)
+
+    response = requests.post(
+        slack_url, message,
+        headers={'Content-Type': 'application/text'}
+    )
+    return {"status": response.status_code}
 
 
 def get_obj(content, vimtype, name):
@@ -72,13 +94,9 @@ def handle(req):
     if host is None:
         raise Exception("Host required")
  
-    #secrets = ctx["secrets"]
-    #if secrets is None:
-    #    raise Exception("Requires vsphere secrets")
-    #username = secrets["username"]
-    #password = secrets.get("password", "")
-    username = "pksservice"
-    password = "password"
+    username = read_secret("vcenter_account")
+    password = read_secret("vcenter_password")
+
 
     template_name = data.get("template")
     name = data.get("name")
@@ -99,6 +117,9 @@ def handle(req):
         port=port,
         sslContext=context)
     try:
+        slack_message = "*Clone Request:* \n\n VM Name: *{0}*\n Target: *{1}*\n DC: *{2}*\n ResPool *{3}*\n\n:smile:".format(name, host, dc_name, resource_pool)
+        slack_post(slack_message)
+
         comment = None
         content = si.RetrieveContent()
         template = get_obj(content, [vim.VirtualMachine], template_name)

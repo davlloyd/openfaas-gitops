@@ -1,20 +1,20 @@
 import json
 import requests
 
+def read_secret(secret):
+    f = open('/var/openfaas/secrets/' + secret)
+    val = f.read()
+    if val is None:
+        raise Exception("Requires {0} secret in function namespace".format(secret))
+    f.close()
+    return val
+
 def handle(req):
-    webhook_url = "https://hooks.slack.com/services/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"
+    webhook_url = read_secret("slack_webhook")
     message = req
 
-    #if metadata is not None:
-    #    vmName = metadata.get("vm_name");
-    #    vmId = metadata.get("vm_id")
-    #    postmessage = "\n{0}\nVM Name: *{1}*\nVM_ID: *{2}*".format(message, vmName, vmId)
-    #else:
-    #    postmessage = "\n*{0}*\n\nPayload: {1}".format(message, str(payload))
-    postmessage = "\n*{0}".format(message) 
-    slack_data = {'text': postmessage}
+    slack_data = {'text': message}
   
-
     response = requests.post(
         webhook_url, data=json.dumps(slack_data),
         headers={'Content-Type': 'application/json'}

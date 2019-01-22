@@ -1,21 +1,27 @@
 import requests
 import json
 
+def read_secret(secret):
+    f = open('/var/openfaas/secrets/' + secret)
+    val = f.read()
+    if val is None:
+        raise Exception("Requires {0} secret in function namespace".format(secret))
+    f.close()
+    return val
+
 def handle(req):
     """handle a request to the function
     Args:
         req (str): request body
     """
 
-    #clone_url = secrets["vmcloneurl"]
-    #host = secrets["vcenterhost"]
-    #template = secrets["template"]
+    gw_url = read_secret("gateway_url")
+    clone_url = "{0}/function/vm-clone".format(gw_url)
+    host = read_secret("vcenter_url")
+    template = read_secret("default_template")
     
-    clone_url = "http://192.168.192.20:8080/function/vm-clone"
-    host = "sydscvvcloudvc01.syddsc.local"
-    template = "ubuntu-1604-template-agent"
     data = json.loads(req)
-    repopath = data["repository"][0]["full_name"]
+    repopath = data["repository"]["full_name"]
     filerequests = data["commits"][0]["added"]
 
     vmlist = ""

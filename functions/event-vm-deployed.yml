@@ -6,6 +6,7 @@ functions:
     lang: python
     handler: ./event-vm-deployed
     image: pks-harbor.syddsc.local/library/event-vm-deployed:latest
+    secrets:
+    - setup
     annotations:
       topic: vm.deployed
-

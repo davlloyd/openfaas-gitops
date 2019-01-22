@@ -6,3 +6,7 @@ functions:
     lang: python
     handler: ./vm-clone
     image: pks-harbor.syddsc.local/library/vm-clone:latest
+    secrets:
+    - vcenter
+    - setup
+    

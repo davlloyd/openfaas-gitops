@@ -6,3 +6,6 @@ functions:
     lang: python
     handler: ./slack-notify
     image: pks-harbor.syddsc.local/library/slack-notify:latest
+    secrets:
+    - slack
+    

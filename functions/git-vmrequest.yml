@@ -6,3 +6,8 @@ functions:
     lang: python
     handler: ./git-vmrequest
     image: pks-harbor.syddsc.local/library/git-vmrequest:latest
+    secrets:
+    - setup
+    - vcenter
+    
+    

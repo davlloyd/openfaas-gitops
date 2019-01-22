@@ -7,6 +7,7 @@ functions:
     handler: ./event-vm-poweron
     image: 
     image: pks-harbor.syddsc.local/library/event-vm-poweron:latest
+    secrets:
+    - setup
     annotations:
       topic: drs.vm.powered.on
-
