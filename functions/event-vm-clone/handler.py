@@ -18,13 +18,13 @@ def handle(req):
     slack_url = "{0}/function/slack-notify".format(gw_url)
 
     data = json.loads(req)
-    metadata = data.get('metadata')
-    message = data.get('message')
+    topic = data.get('topic')
+    moref = data.get('managedObjectReference')
+    vmName = data.get('Name')
 
-    if metadata is not None:
-        vmName = metadata.get("vm_name")
-        vmId = metadata.get("vm_id")
-        postmessage = "\n{0} :hammertime:\n\nVM Name: *{1}*\nVM_ID: *{2}*".format(message, vmName, vmId.replace("VirtualMachine:", ""))
+    if moref is not None:
+        vmId = moref.get("Value")
+        postmessage = "\n{0} :hammertime:\n\nVM Name: *{1}*\nVM_ID: *{2}*".format(topic, vmName, vmId)
     else:
         postmessage = req
 
